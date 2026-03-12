@@ -37,6 +37,16 @@ const profiles = [
   },
 ];
 
+export const metadata = {
+  title: "Service page",
+  description: "this is  my Service page",
+  authors : [{name:"akshit adroja"}, {name: "akshit patel"}],
+
+  icons: {
+    icon: "/images/me.jpg",
+  },
+
+}
 const Service = async () => {
   return (
     <main style={{ padding: "2rem", maxWidth: "1120px", margin: "0 auto" }}>
