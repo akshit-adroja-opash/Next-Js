@@ -82,17 +82,16 @@ const Service = async () => {
                 width: "96px",
                 height: "96px",
                 objectFit: "cover",
-                
               }}
             />
-            <h2 style={{ margin: 0, fontSize: "1.1rem" }}>{profile.name}</h2>
+<h2 style={{ margin: 0, fontSize: "1.1rem", color: "black" }}>{profile.name}</h2>
             <p style={{ margin: "0.25rem 0 0.75rem", fontSize: "0.9rem", color: "rgba(0,0,0,0.7)" }}>
               {profile.role}
             </p>
             <p style={{ margin: 0, fontSize: "0.85rem", color: "white" }}>
               {profile.description}
             </p>
-          </section>
+          </section>  
         ))}
       </div>
     </main>

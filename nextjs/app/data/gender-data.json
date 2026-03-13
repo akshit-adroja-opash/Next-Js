@@ -1,0 +1,22 @@
+{
+  "john": {"gender": "male", "probability": 0.98},
+  "akshit": {"gender": "male", "probability": 0.99},
+  "mary": {"gender": "female", "probability": 0.97},
+  "james": {"gender": "male", "probability": 0.96},
+  "alex": {"gender": "male", "probability": 0.92},
+  "alexa": {"gender": "female", "probability": 0.95},
+  "bob": {"gender": "male", "probability": 0.99},
+  "alice": {"gender": "female", "probability": 0.98},
+  "chris": {"gender": "male", "probability": 0.85},
+  "chrisy": {"gender": "female", "probability": 0.88},
+  "pat": null,
+  "unknown": null,
+  "sarah": {"gender": "female", "probability": 0.99},
+  "david": {"gender": "male", "probability": 0.98},
+  "emma": {"gender": "female", "probability": 0.97},
+  "michael": {"gender": "male", "probability": 0.96},
+  "olivia": {"gender": "female", "probability": 0.98},
+  "noah": {"gender": "male", "probability": 0.95},
+  "ava": {"gender": "female", "probability": 0.99},
+  "liam": {"gender": "male", "probability": 0.97}
+}
