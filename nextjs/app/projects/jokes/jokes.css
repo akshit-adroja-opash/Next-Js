@@ -1,0 +1,83 @@
+.joke-container {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.joke-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.joke-card {
+  background-color: #f3f4f6;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.setup-text {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: black;
+
+}
+
+.punchline-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease-in-out;
+}
+
+.punchline-text.show {
+  opacity: 1;
+  transform: translateY(0);
+  color: black;
+}
+
+.buttons-container {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.reveal-btn,
+.next-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reveal-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.reveal-btn:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.reveal-btn:disabled {
+  background-color: #6ee7b7;
+  cursor: not-allowed;
+}
+
+.next-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.next-btn:hover {
+  background-color: #2563eb;
+}
