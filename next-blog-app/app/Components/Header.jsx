@@ -19,7 +19,7 @@ const Header = () => {
            </form>
             </div>
 
-        </div>
+        </div>  
     )
 }
 export default Header;
