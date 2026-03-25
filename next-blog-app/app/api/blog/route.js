@@ -2,14 +2,36 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/config/db";
 import { writeFile } from "fs/promises";
 import BlogModel from "@/lib/models/BlogModel";
+const fs = require("fs");
 
 const LoadDB = async () => {
     await connectDB();
 }
 LoadDB();
 
+import { blog_data } from "@/app/Assets/assets";
+
+// API Endpoint to get all blogs
+
 export async function GET(request) {
-    return NextResponse.json({ msg: "API is working" });
+    let blogs = await BlogModel.find({});
+    
+    // Auto-populate default blogs if the database is completely empty
+    if (blogs.length === 0) {
+        const defaultBlogs = blog_data.map(b => ({
+            title: b.title,
+            description: b.description,
+            category: b.category,
+            author: b.author,
+            image: b.image.src || b.image,
+            author_img: "[object Object]", // Forces it to use the default profile icon safely
+        }));
+        await BlogModel.insertMany(defaultBlogs);
+        blogs = await BlogModel.find({});
+        console.log("Database initialized with default blogs!");
+    }
+
+    return NextResponse.json({ blogs });
 }
 
 export async function POST(request) {
@@ -35,6 +57,27 @@ export async function POST(request) {
     await BlogModel.create(blogData);
     console.log("Blog saved successfully");
 
-    return NextResponse.json({ success: true, msg: `Blog Added ${imgUrl}` });
+    return NextResponse.json({ success: true, msg: "Blog Added" });
+}
+
+// creating API Endpoint to delete blog
+
+export async function DELETE(request) {
+    const id = request.nextUrl.searchParams.get("id");
+    
+    // Prevent crashes when ID is mistakenly passed as the string "undefined" 
+    if (!id || id === "undefined") {
+        return NextResponse.json({ success: false, msg: "Invalid or missing ID" }, { status: 400 });
+    }
+
+    const blog = await BlogModel.findByIdAndDelete(id);
+    if (blog) {
+        try {
+            fs.unlinkSync(`./public${blog.image}`);
+        } catch (error) {
+            console.log("Image already deleted or not found");
+        }
+    }
+    return NextResponse.json({ success: true, msg: "Blog Deleted" });
 }
 
