@@ -29,7 +29,7 @@ const page = () => {
         formData.append("description", data.description);
         formData.append("category", data.category);
         formData.append("author", data.author);
-        formData.append("author_img", data.author_img);
+        formData.append("author_img", data.author_img.src || data.author_img);
         formData.append("image", image);
         const res = await axios.post("/api/blog", formData);
         if (res.data.success) {

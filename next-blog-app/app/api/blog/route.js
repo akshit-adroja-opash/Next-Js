@@ -14,24 +14,45 @@ import { blog_data } from "@/app/Assets/assets";
 // API Endpoint to get all blogs
 
 export async function GET(request) {
-    let blogs = await BlogModel.find({});
-    
-    // Auto-populate default blogs if the database is completely empty
-    if (blogs.length === 0) {
-        const defaultBlogs = blog_data.map(b => ({
-            title: b.title,
-            description: b.description,
-            category: b.category,
-            author: b.author,
-            image: b.image.src || b.image,
-            author_img: "[object Object]", // Forces it to use the default profile icon safely
-        }));
-        await BlogModel.insertMany(defaultBlogs);
-        blogs = await BlogModel.find({});
-        console.log("Database initialized with default blogs!");
-    }
+    try {
+        await connectDB();
+        const blogId = request.nextUrl.searchParams.get("id");
 
-    return NextResponse.json({ blogs });
+        if (blogId) {
+            const blog = await BlogModel.findById(blogId);
+            if (!blog) {
+                return NextResponse.json({ success: false, msg: "Blog not found" }, { status: 404 });
+            }
+            return NextResponse.json(blog);
+        }
+
+        let blogs = await BlogModel.find({});
+
+        const corruptedBlogs = blogs.filter(b => b.image === "[object Object]" || b.author_img === "[object Object]");
+        if (corruptedBlogs.length > 0) {
+            await BlogModel.deleteMany({ _id: { $in: corruptedBlogs.map(b => b._id) } });
+            blogs = await BlogModel.find({});
+        }
+
+        if (blogs.length === 0) {
+            const defaultBlogs = blog_data.map(b => ({
+                title: b.title,
+                description: b.description,
+                category: b.category,
+                author: b.author,
+                author_img: b.author_img.src || b.author_img,
+                image: b.image.src || b.image,
+            }));
+            await BlogModel.insertMany(defaultBlogs);
+            blogs = await BlogModel.find({});
+            console.log("Database initialized with default blogs!");
+        }
+
+        return NextResponse.json({ blogs });
+    } catch (error) {
+        console.error("Error in GET /api/blog:", error);
+        return NextResponse.json({ success: false, msg: "Internal Server Error" }, { status: 500 });
+    }
 }
 
 export async function POST(request) {
@@ -64,7 +85,7 @@ export async function POST(request) {
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id");
-    
+
     // Prevent crashes when ID is mistakenly passed as the string "undefined" 
     if (!id || id === "undefined") {
         return NextResponse.json({ success: false, msg: "Invalid or missing ID" }, { status: 400 });
